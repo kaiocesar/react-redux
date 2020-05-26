@@ -1,18 +1,12 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
+import * as CourseActions from '../../store/actions/course';
 
-function toggleLesson(module, lesson) {
-    return {
-        type: 'TOGGLE_LESSON', // é sempre preciso retornar essa chave
-        module,
-        lesson,
-    }
-}
 
  // componentes que utilizam o connect, herdam essa função 'dispatch'
  // a função dispatch serve para dispararmos ações para o redux
-const Sidebar = ({ modules, dispatch }) => (
+const Sidebar = ({ modules, toggleLesson }) => (
     <aside>
         { modules.map(module => (
             <div>
@@ -20,7 +14,7 @@ const Sidebar = ({ modules, dispatch }) => (
                 <ul>
                     {module.lessons.map(lesson => (
                     <li key={lesson.id}>{lesson.title}
-                    <button onClick={() => dispatch(toggleLesson(module, lesson)) }>Assistir aula</button>
+                    <button onClick={() => toggleLesson(module, lesson) }>Assistir aula</button>
                     </li>
                     ))}
                 </ul>
@@ -29,4 +23,17 @@ const Sidebar = ({ modules, dispatch }) => (
     </aside>
 )
 
-export default connect(state => ({ modules: state.course.modules }))(Sidebar);
+
+const mapStateToProps = state => ({
+    modules: state.course.modules
+})
+
+const mapDispatchToProps = dispatch => ({
+    toggleLesson: (module, lesson) => dispatch(CourseActions.toggleLesson(module, lesson))
+})
+
+
+export default connect(
+    mapStateToProps, 
+    mapDispatchToProps
+)(Sidebar);
