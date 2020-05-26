@@ -2,7 +2,7 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 import * as CourseActions from '../../store/actions/course';
-
+import { bindActionCreators } from 'redux';
 
  // componentes que utilizam o connect, herdam essa função 'dispatch'
  // a função dispatch serve para dispararmos ações para o redux
@@ -28,9 +28,8 @@ const mapStateToProps = state => ({
     modules: state.course.modules
 })
 
-const mapDispatchToProps = dispatch => ({
-    toggleLesson: (module, lesson) => dispatch(CourseActions.toggleLesson(module, lesson))
-})
+const mapDispatchToProps = dispatch => 
+    bindActionCreators(CourseActions, dispatch)
 
 
 export default connect(
